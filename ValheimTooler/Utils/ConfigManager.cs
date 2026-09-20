@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using System;
 using System.IO;
 using UnityEngine;
 using ValheimTooler.Configuration;
@@ -48,27 +48,10 @@ namespace ValheimTooler.Utils
 
         static ConfigManager()
         {
-            var valheimAssemblyFolder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-
-            var configPathFilePath = Path.Combine(valheimAssemblyFolder, "config_vt.path");
-            var configPath = "";
-
-            if (File.Exists(configPathFilePath))
-            {
-                configPath = Path.GetFullPath(File.ReadAllText(configPathFilePath));
-
-                if (!Directory.Exists(configPath))
-                {
-                    ZLog.Log("[ValheimTooler - ConfigManager] Path given in config_vt.path file is incorrect.");
-                    configPath = "";
-                }
-            }
-            else
-            {
-                ZLog.Log("[ValheimTooler - ConfigManager] Failed to find config_vt.path file.");
-            }
-
-            s_configurationPath = configPath;
+            s_configurationPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "AppData", "LocalLow", "IronGate", "Valheim", "ValheimTooler");
+            Directory.CreateDirectory(s_configurationPath);
 
             var configFilePath = Path.Combine(s_configurationPath, SettingsFileName);
             var internalFilePath = Path.Combine(s_configurationPath, InternalFileName);

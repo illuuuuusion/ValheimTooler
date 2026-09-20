@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using BepInEx;
 using HarmonyLib;
@@ -35,11 +33,6 @@ namespace ValheimToolerMod
             FejdStartupPatch.OnGameInitialized -= LoadPlugin;
             _harmony?.UnpatchSelf();
             _harmony = null;
-
-            var valheimAssemblyFolder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-            var configPathFilePath = Path.Combine(valheimAssemblyFolder, "config_vt.path");
-
-            File.WriteAllText(configPathFilePath, Paths.ConfigPath);
 
             CallLoaderInit();
         }

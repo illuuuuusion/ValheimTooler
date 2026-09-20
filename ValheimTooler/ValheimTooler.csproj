@@ -90,6 +90,10 @@
     <Reference Include="MonoMod.Utils, Version=22.1.29.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoMod.Utils.22.1.29.1\lib\net452\MonoMod.Utils.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard">
+      <HintPath>$(ValheimManaged)\netstandard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="SharpConfig, Version=3.2.9.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpConfig.3.2.9.1\lib\net461\SharpConfig.dll</HintPath>
     </Reference>
@@ -238,4 +242,15 @@
   PowerShell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File "$(SolutionDir)scripts\postbuild_cleanup.ps1" -TargetDir $(TargetDir)
 )</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="Merge" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <ItemGroup>
+      <MergeAsm Include="$(TargetPath)" />
+      <MergeAsm Include="$(TargetDir)0Harmony.dll" />
+      <MergeAsm Include="$(TargetDir)Mono.Cecil*.dll" />
+      <MergeAsm Include="$(TargetDir)MonoMod.*.dll" />
+      <MergeAsm Include="$(TargetDir)SharpConfig.dll" />
+    </ItemGroup>
+    <MakeDir Directories="$(TargetDir)merged" />
+    <Exec Command="&quot;$(SolutionDir)packages\ILRepack.2.0.18\tools\ILRepack.exe&quot; /target:library /out:&quot;$(TargetDir)merged\ValheimTooler.dll&quot; /lib:&quot;$(ValheimManaged)&quot; @(MergeAsm-&gt;'&quot;%(FullPath)&quot;', ' ')" />
+  </Target>
 </Project>

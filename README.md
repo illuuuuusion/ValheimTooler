@@ -89,24 +89,19 @@ Features:
 
 ## Install
 
-**Prerequisite:** [BepInEx for Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/) must already be installed. This plugin will not load without it. Thunderstore / r2modman is the easiest way.
+ValheimTooler can be injected without modifying the game installation:
 
-Prebuilt 1.12.0 files are in [`Built DLLs`](./Built%20DLLs):
+1. Start Valheim normally through Steam and wait for the main menu.
+2. Put the merged `ValheimTooler.dll`, `ValheimToolerInjector.exe`, and `SharpMonoInjector.dll` together in any folder outside the game directory.
+3. Run `ValheimToolerInjector.exe` and press **Del** in game to show or hide the window.
 
-* `ValheimTooler.dll`
-* `ValheimToolerMod.dll`
-* `SharpConfig.dll`
+Windows Defender may flag process injection. If it blocks the injector, add an exclusion for the folder containing these three files.
 
-1. Install BepInEx for Valheim first.
-2. Copy all three files from [`Built DLLs`](./Built%20DLLs) into `BepInEx/plugins/ValheimTooler/`.
-   * Steam install: `Valheim/BepInEx/plugins/ValheimTooler/`
-   * Thunderstore / r2modman: your profile's `BepInEx/plugins/ValheimTooler/`
-3. Start Valheim **modded**.
-4. Wait until the **main menu**, then press **Del** to show or hide the window.
+The BepInEx path remains supported: install [BepInEx for Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/) and copy `ValheimTooler.dll`, `ValheimToolerMod.dll`, and `SharpConfig.dll` into `BepInEx/plugins/ValheimTooler/`.
 
-To build from source instead, compile `ValheimTooler` and `ValheimToolerMod` as **Release | x64** against your local Valheim install, then copy the same three DLLs into that plugin folder. Point the Valheim assembly references in the `.csproj` files at your own game install before building.
+To build from source, restore NuGet packages and build `ValheimTooler` and `ValheimToolerInjector` as **Release | x64** against your local Valheim install. Override the default location with `/p:ValheimPath=C:\path\to\Valheim`. The merged assembly is written to `ValheimTooler/bin/x64/Release/merged/ValheimTooler.dll`.
 
-Astropilot's installer/launcher still lives in this repo. For an old pre-1.0 build you can use [the original releases](https://github.com/Astropilot/ValheimTooler/releases). Those builds do **not** work on Valheim 1.0.
+For an old pre-1.0 build you can use [the original releases](https://github.com/Astropilot/ValheimTooler/releases). Those builds do **not** work on Valheim 1.0.
 
 If an install breaks the game, use Steam's "Verify integrity of game files".
 
@@ -114,8 +109,7 @@ If an install breaks the game, use Steam's "Verify integrity of game files".
 
 A config file is created on first launch:
 
-* Launcher: next to `ValheimToolerLauncher.exe`
-* BepInEx: `BepInEx/config/valheimtooler_settings.cfg`
+`%USERPROFILE%\AppData\LocalLow\IronGate\Valheim\ValheimTooler\valheimtooler_settings.cfg`
 
 You can change the toggle key (default Delete), whether the window starts visible, language, and feature shortcuts.
 
